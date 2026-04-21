@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section-head">
+    <div>
+      <p class="eyebrow">Admin Panel</p>
+      <h1>Platform Overview</h1>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <article class="card stat-card">
+      <p class="eyebrow">Users</p>
+      <h2>{{ stats.users }}</h2>
+    </article>
+    <article class="card stat-card">
+      <p class="eyebrow">Posts</p>
+      <h2>{{ stats.posts }}</h2>
+    </article>
+    <article class="card stat-card">
+      <p class="eyebrow">Comments</p>
+      <h2>{{ stats.comments }}</h2>
+    </article>
+    <article class="card stat-card">
+      <p class="eyebrow">Likes</p>
+      <h2>{{ stats.likes }}</h2>
+    </article>
+  </section>
+
+  <section class="admin-grid">
+    <div class="card table-card">
+      <div class="section-head compact">
+        <div>
+          <p class="eyebrow">User Management</p>
+          <h2>Members</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Posts</th>
+              <th>Comments</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+              <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{% if user.is_admin %}Admin{% else %}Member{% endif %}</td>
+                <td>{{ user.post_count }}</td>
+                <td>{{ user.comment_count }}</td>
+                <td>
+                  {% if current_user.id != user.id %}
+                    <form action="/admin/users/{{ user.id }}/toggle" method="post">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+                      <button class="button secondary small" type="submit">
+                        {% if user.is_admin %}Remove Admin{% else %}Make Admin{% endif %}
+                      </button>
+                    </form>
+                  {% else %}
+                    <span class="meta">Current user</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <div class="section-head compact">
+        <div>
+          <p class="eyebrow">Recent Content</p>
+          <h2>Posts</h2>
+        </div>
+      </div>
+      <div class="admin-post-list">
+        {% for post in posts %}
+          <article class="admin-post-row">
+            <div>
+              <p class="meta">{{ post.author_name }}</p>
+              <h3>{{ post.title }}</h3>
+              <p class="engagement">{{ post.like_count }} likes | {{ post.comment_count }} comments</p>
+            </div>
+            <a class="text-link" href="/posts/{{ post.id }}">Open</a>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

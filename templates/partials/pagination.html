@@ -1,0 +1,11 @@
+{% if pagination.total_pages > 1 %}
+  <nav class="pagination" aria-label="Pagination">
+    {% if pagination.page > 1 %}
+      <a class="button secondary small" href="?q={{ search_query }}&page={{ pagination.page - 1 }}">Previous</a>
+    {% endif %}
+    <span class="pagination-label">Page {{ pagination.page }} of {{ pagination.total_pages }}</span>
+    {% if pagination.page < pagination.total_pages %}
+      <a class="button secondary small" href="?q={{ search_query }}&page={{ pagination.page + 1 }}">Next</a>
+    {% endif %}
+  </nav>
+{% endif %}

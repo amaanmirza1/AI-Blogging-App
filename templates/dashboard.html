@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="section-head">
+    <div>
+      <p class="eyebrow">Dashboard</p>
+      <h1>Your Posts</h1>
+    </div>
+    <div class="section-actions">
+      <form class="search-form" method="get" action="/dashboard">
+        <input type="search" name="q" placeholder="Search your posts..." value="{{ search_query }}" />
+        <button class="button small" type="submit">Search</button>
+      </form>
+      <a class="button" href="/posts/new">Create New Post</a>
+    </div>
+  </section>
+
+  <section class="grid">
+    {% for post in posts %}
+      <article class="card">
+        <p class="meta">Updated {{ post.updated_at }}</p>
+        <h3>{{ post.title }}</h3>
+        {% if post.featured_image %}
+          <img class="card-cover" src="{{ post.featured_image }}" alt="{{ post.title }}" />
+        {% endif %}
+        <p>{{ post.content|excerpt(160) }}</p>
+        <p class="engagement">{{ post.like_count }} likes | {{ post.comment_count }} comments</p>
+        <div class="actions">
+          <a class="text-link" href="/posts/{{ post.id }}">View</a>
+          <a class="text-link" href="/posts/{{ post.id }}/edit">Edit</a>
+        </div>
+      </article>
+    {% else %}
+      <article class="empty-state">
+        <h3>No drafts yet</h3>
+        <p>Write your first post to see it here.</p>
+      </article>
+    {% endfor %}
+  </section>
+
+  {% include "partials/pagination.html" %}
+{% endblock %}

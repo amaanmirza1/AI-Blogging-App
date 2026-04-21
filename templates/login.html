@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="auth-shell">
+    <form class="auth-card" action="/login" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <p class="eyebrow">Welcome Back</p>
+      <h1>Login to your account</h1>
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" required />
+      </label>
+      <button class="button" type="submit">Login</button>
+    </form>
+  </section>
+{% endblock %}

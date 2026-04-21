@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="auth-shell">
+    <form class="auth-card" action="/register" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <p class="eyebrow">Create Account</p>
+      <h1>Start publishing with AI</h1>
+      <label>
+        Name
+        <input type="text" name="name" required />
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" minlength="6" required />
+      </label>
+      <p class="helper-text">Use a stronger password with letters and numbers.</p>
+      <button class="button" type="submit">Register</button>
+    </form>
+  </section>
+{% endblock %}

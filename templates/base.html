@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ app_name }}</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="brand" href="/">{{ app_name }}</a>
+        <nav class="nav">
+          <a href="/">Home</a>
+          {% if current_user %}
+            <a href="/dashboard">Dashboard</a>
+            <a href="/posts/new">Write</a>
+            {% if current_user.is_admin %}
+              <a href="/admin">Admin</a>
+            {% endif %}
+            <form action="/logout" method="post">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+              <button class="link-button" type="submit">Logout</button>
+            </form>
+          {% else %}
+            <a href="/login">Login</a>
+            <a class="button small" href="/register">Register</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {% if flash %}
+        <div class="flash flash-{{ flash.category }}">{{ flash.message }}</div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+    <script src="/static/editor.js"></script>
+  </body>
+</html>

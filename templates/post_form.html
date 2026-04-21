@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="editor-shell">
+    <form class="editor-card" action="{{ action }}" method="post" enctype="multipart/form-data" data-rich-editor>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <p class="eyebrow">{% if post %}Edit Post{% else %}New Post{% endif %}</p>
+      <h1>{% if post %}Update your article{% else %}Write a new article{% endif %}</h1>
+      <label>
+        Title
+        <input type="text" name="title" value="{{ post.title if post else '' }}" required />
+      </label>
+      <label>
+        Featured Image
+        <input type="file" name="featured_image" accept="image/png,image/jpeg,image/webp,image/gif" />
+      </label>
+      {% if post and post.featured_image %}
+        <img class="editor-image-preview" src="{{ post.featured_image }}" alt="{{ post.title }}" />
+      {% endif %}
+      <label>
+        Content
+        <textarea name="content" rows="14" required hidden>{{ post.content if post else '' }}</textarea>
+      </label>
+      <div class="editor-toolbar">
+        <button type="button" class="button secondary small" data-editor-command="h2">H2</button>
+        <button type="button" class="button secondary small" data-editor-command="bold">Bold</button>
+        <button type="button" class="button secondary small" data-editor-command="italic">Italic</button>
+        <button type="button" class="button secondary small" data-editor-command="blockquote">Quote</button>
+        <button type="button" class="button secondary small" data-editor-command="ul">List</button>
+        <button type="button" class="button secondary small" data-editor-command="link">Link</button>
+      </div>
+      <div class="rich-editor" contenteditable="true" data-editor-surface>{{ post.content if post else '<p>Start writing here...</p>' }}</div>
+      <div class="editor-meta">
+        <p class="helper-text">Rich text stays sanitized before saving.</p>
+      </div>
+      <div class="editor-preview">
+        <p class="eyebrow">Live Preview</p>
+        <div class="preview-surface" data-editor-preview></div>
+      </div>
+      <button class="button" type="submit">{% if post %}Save Changes{% else %}Publish Post{% endif %}</button>
+    </form>
+  </section>
+{% endblock %}

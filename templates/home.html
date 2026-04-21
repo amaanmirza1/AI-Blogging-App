@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Auth + CRUD + AI Summaries</p>
+      <h1>Publish blogs and generate smart summaries in one place.</h1>
+      <p class="hero-copy">
+        A polished starter project for portfolios, demos, and college submissions.
+        Write posts, manage them securely, and create AI summaries with one click.
+      </p>
+      <div class="hero-actions">
+        {% if current_user %}
+          <a class="button" href="/dashboard">Open Dashboard</a>
+        {% else %}
+          <a class="button" href="/register">Get Started</a>
+          <a class="button secondary" href="/login">Login</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-card">
+      <h3>Built-in Modules</h3>
+      <ul>
+        <li>Secure registration and login</li>
+        <li>Create, edit, view, and delete posts</li>
+        <li>AI and fallback summarization engine</li>
+        <li>SQLite-backed starter database</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-head">
+    <div>
+      <h2>Recent Posts</h2>
+      <p>Latest content created on the platform.</p>
+    </div>
+    <form class="search-form" method="get" action="/">
+      <input type="search" name="q" placeholder="Search posts..." value="{{ search_query }}" />
+      <button class="button small" type="submit">Search</button>
+    </form>
+  </section>
+
+  <section class="grid">
+    {% for post in posts %}
+      <article class="card">
+        <p class="meta">By {{ post.author_name }} | {{ post.created_at }}</p>
+        <h3>{{ post.title }}</h3>
+        {% if post.featured_image %}
+          <img class="card-cover" src="{{ post.featured_image }}" alt="{{ post.title }}" />
+        {% endif %}
+        <p>{{ post.content|excerpt(180) }}</p>
+        <p class="engagement">{{ post.like_count }} likes | {{ post.comment_count }} comments</p>
+        <a class="text-link" href="/posts/{{ post.id }}">Read more</a>
+      </article>
+    {% else %}
+      <article class="empty-state">
+        <h3>No posts yet</h3>
+        <p>Create the first blog post and start building your AI publishing workflow.</p>
+      </article>
+    {% endfor %}
+  </section>
+
+  {% include "partials/pagination.html" %}
+{% endblock %}
