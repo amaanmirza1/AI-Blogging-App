@@ -29,7 +29,7 @@ from app.summarizer import Summarizer
 
 def create_app() -> FastAPI:
     application = FastAPI(title=settings.app_name)
-```
+
 application.add_middleware(
     SessionMiddleware,
     secret_key=settings.secret_key,
