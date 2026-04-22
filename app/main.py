@@ -14,6 +14,10 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]   # temporarily sab allow
+)
 from app.auth import create_access_token, decode_access_token, hash_password, verify_password
 from app.config import settings
 from app.db import execute, execute_many, fetch_all, fetch_one, init_db
