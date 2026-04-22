@@ -48,7 +48,7 @@ application.add_middleware(
 # Static files
 application.mount("/static", StaticFiles(directory=settings.base_dir / "static"), name="static")
 application.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
-return application
+                return application
 
 
 app = create_app()
