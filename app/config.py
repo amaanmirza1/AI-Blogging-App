@@ -43,7 +43,6 @@ def db_path(self) -> Path:
     return self.base_dir / "blog.db"
 ```
 
-settings = Settings()
 
 settings = Settings()
 
