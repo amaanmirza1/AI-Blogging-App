@@ -1,4 +1,4 @@
-from __future__ import annotations
+from future import annotations
 
 import math
 from typing import Any
@@ -14,34 +14,37 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["*"]   # temporarily sab allow
-)
 from app.auth import create_access_token, decode_access_token, hash_password, verify_password
 from app.config import settings
 from app.db import execute, execute_many, fetch_all, fetch_one, init_db
 from app.security import (
-    delete_uploaded_file,
-    ensure_csrf_token,
-    html_to_text,
-    sanitize_rich_text,
-    save_image,
-    validate_csrf,
+delete_uploaded_file,
+ensure_csrf_token,
+html_to_text,
+sanitize_rich_text,
+save_image,
+validate_csrf,
 )
 from app.summarizer import Summarizer
 
-
 def create_app() -> FastAPI:
-    application = FastAPI(title=settings.app_name)
-    application.add_middleware(
-        SessionMiddleware,
-        secret_key=settings.secret_key,
-        same_site="lax",
-        https_only=settings.session_https_only,
-        max_age=60 * 60 * 12,
-    )
-    application.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
+application = FastAPI(title=settings.app_name)
+
+# ✅ Session Middleware
+application.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.secret_key,
+    same_site="lax",
+    https_only=settings.session_https_only,
+    max_age=60 * 60 * 12,
+)
+
+# ✅ Trusted Host Middleware (FIXED)
+application.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]   # 🔥 Render fix
+)
+        application.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
     application.mount("/static", StaticFiles(directory=settings.base_dir / "static"), name="static")
     application.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
     return application
