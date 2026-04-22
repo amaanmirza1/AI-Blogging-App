@@ -28,8 +28,8 @@ validate_csrf,
 from app.summarizer import Summarizer
 
 def create_app() -> FastAPI:
-application = FastAPI(title=settings.app_name)
-
+    application = FastAPI(title=settings.app_name)
+    
 # Session Middleware
 application.add_middleware(
     SessionMiddleware,
