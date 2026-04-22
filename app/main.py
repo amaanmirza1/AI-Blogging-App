@@ -56,8 +56,6 @@ application.mount(
 )
 
 return application
-```
-
 
 app = create_app()
 templates = Jinja2Templates(directory=str(settings.base_dir / "templates"))
