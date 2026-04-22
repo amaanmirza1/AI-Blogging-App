@@ -30,7 +30,7 @@ from app.summarizer import Summarizer
 def create_app() -> FastAPI:
 application = FastAPI(title=settings.app_name)
 
-# ✅ Session Middleware
+# Session Middleware
 application.add_middleware(
     SessionMiddleware,
     secret_key=settings.secret_key,
@@ -39,15 +39,16 @@ application.add_middleware(
     max_age=60 * 60 * 12,
 )
 
-# ✅ Trusted Host Middleware (FIXED)
+# Trusted Host Middleware
 application.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["*"]   # 🔥 Render fix
+    allowed_hosts=["*"]
 )
-        application.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
-    application.mount("/static", StaticFiles(directory=settings.base_dir / "static"), name="static")
-    application.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
-    return application
+
+# Static files
+application.mount("/static", StaticFiles(directory=settings.base_dir / "static"), name="static")
+application.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
+return application
 
 
 app = create_app()
