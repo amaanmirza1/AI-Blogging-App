@@ -30,31 +30,32 @@ from app.summarizer import Summarizer
 def create_app() -> FastAPI:
     application = FastAPI(title=settings.app_name)
 
-application.add_middleware(
-    SessionMiddleware,
-    secret_key=settings.secret_key,
-    same_site="lax",
-    https_only=settings.session_https_only,
-    max_age=60 * 60 * 12,
-)
+    application.add_middleware(
+        SessionMiddleware,
+        secret_key=settings.secret_key,
+        same_site="lax",
+        https_only=settings.session_https_only,
+        max_age=60 * 60 * 12,
+    )
 
-application.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["*"]
-)
+    application.add_middleware(
+        TrustedHostMiddleware,
+        allowed_hosts=["*"]
+    )
 
-application.mount(
-    "/static",
-    StaticFiles(directory=settings.base_dir / "static"),
-    name="static"
-)
+    application.mount(
+        "/static",
+        StaticFiles(directory=settings.base_dir / "static"),
+        name="static"
+    )
 
-application.mount(
-    "/uploads",
-    StaticFiles(directory=settings.upload_dir),
-    name="uploads"
-)
-return application
+    application.mount(
+        "/uploads",
+        StaticFiles(directory=settings.upload_dir),
+        name="uploads"
+    )
+
+    return application
 
 app = create_app()
 templates = Jinja2Templates(directory=str(settings.base_dir / "templates"))
